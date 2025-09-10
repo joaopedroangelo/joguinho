@@ -32,230 +32,127 @@ class _QuestionOverlayState extends State<QuestionOverlay> {
     }
 
     return Material(
-      color: Colors.transparent,
-      child: Stack(
-        children: [
-          // Fundo animado com gradiente
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.blue.shade100,
-                  Colors.purple.shade100,
-                ],
+      color: Colors.black.withOpacity(0.5), // Fundo semi-transparente escuro
+      child: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: 500,
+            maxHeight: MediaQuery.of(context).size.height * 0.8,
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                spreadRadius: 2,
               ),
-            ),
-            width: double.infinity,
-            height: double.infinity,
+            ],
           ),
-
-          // Bolhas flutuantes (emoji bolinhas)
-          Positioned(
-            top: 100,
-            left: 30,
-            child: Text(
-              '🔵',
-              style: TextStyle(fontSize: 40),
-            ),
-          ),
-          Positioned(
-            top: 200,
-            right: 40,
-            child: Text(
-              '🟠',
-              style: TextStyle(fontSize: 35),
-            ),
-          ),
-          Positioned(
-            bottom: 150,
-            left: 50,
-            child: Text(
-              '🟢',
-              style: TextStyle(fontSize: 45),
-            ),
-          ),
-
-          // Conteúdo principal
-          Center(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Cabeçalho simples
+              Container(
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.deepPurple.withOpacity(0.2),
-                      blurRadius: 20,
-                      spreadRadius: 3,
-                      offset: const Offset(0, 10),
-                    )
-                  ],
-                  border: Border.all(
-                    color: Colors.amber,
-                    width: 3,
+                  color: Colors.blue.shade50,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Cabeçalho com emoji e botão de áudio
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.yellow.shade100,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.orange,
-                              width: 3,
-                            ),
-                          ),
-                          child: Text(
-                            '🧩',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        // Botão para repetir áudio
-                        IconButton(
-                          icon: Icon(Icons.volume_up, size: 30),
-                          color: Colors.purple.shade700,
-                          onPressed: () {
-                            widget.game.playQuestionAudio();
-                          },
-                        ),
-                      ],
-                    ),
-
-                    // Texto de incentivo
-                    Text(
-                      'Desafio da Estrela! 🌟',
+                    const Text(
+                      '🎯',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.purple.shade700,
-                        fontFamily: 'ComicNeue',
+                        color: Colors.blue,
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
-                    // Instrução para ouvir
-                    Text(
-                      'Escute com atenção! 👂',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue.shade700,
-                        fontFamily: 'ComicNeue',
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    // Pergunta
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue.shade50,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.lightBlue.shade300,
-                          width: 2,
-                        ),
-                      ),
-                      child: Text(
-                        currentQuestion['question'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue.shade900,
-                          fontFamily: 'ComicNeue',
-                          height: 1.3,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Opções de resposta
-                    ...currentQuestion['options'].asMap().entries.map(
-                      (entry) {
-                        int index = entry.key;
-                        String option = entry.value;
-
-                        // Emojis para cada opção
-                        List<String> optionEmojis = ['🟦', '🟩', '🟨', '🟥'];
-                        String optionEmoji = optionEmojis[index % 4];
-
-                        // Cores vibrantes para cada botão
-                        List<Color> buttonColors = [
-                          Colors.blue.shade400,
-                          Colors.green.shade400,
-                          Colors.orange.shade400,
-                          Colors.pink.shade400,
-                        ];
-
-                        Color buttonColor = buttonColors[index % 4];
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: buttonColor,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(double.infinity, 70),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              elevation: 8,
-                              shadowColor: buttonColor.withOpacity(0.6),
-                              textStyle: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'ComicNeue',
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 15,
-                              ),
-                            ),
-                            onPressed: () {
-                              // Notifique o jogo sobre a resposta selecionada
-                              widget.game.onQuestionAnswered(option);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '$optionEmoji ',
-                                  style: TextStyle(fontSize: 22),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    option,
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                    // Botão para repetir áudio com emoji
+                    GestureDetector(
+                      onTap: () {
+                        widget.game.playQuestionAudio();
                       },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          '🔊', // Emoji de alto-falante
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
+
+              const SizedBox(height: 16),
+
+              // Área da pergunta
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  currentQuestion['question'],
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Opções de resposta
+              ...currentQuestion['options'].asMap().entries.map(
+                (entry) {
+                  String option = entry.value;
+
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.blue,
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                              color: Colors.blue.shade200, width: 1.5),
+                        ),
+                        elevation: 1,
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
+                      ),
+                      onPressed: () {
+                        widget.game.onQuestionAnswered(option);
+                      },
+                      child: Text(option),
+                    ),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 20),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -20,6 +20,7 @@ final segments = [
   segment2,
   segment3,
   segment4,
+  segment5, // Novo segmento adicional
 ];
 
 final segment0 = [
@@ -31,13 +32,18 @@ final segment0 = [
   Block(Vector2(5, 0), GroundBlock),
   Block(Vector2(5, 1), WaterEnemy),
   Block(Vector2(5, 3), PlatformBlock),
+  Block(Vector2(5, 4), Star), // ⭐ Nova estrela
   Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(6, 3), PlatformBlock),
+  Block(Vector2(6, 4), Star), // ⭐ Nova estrela
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(7, 3), PlatformBlock),
+  Block(Vector2(7, 4), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 3), PlatformBlock),
+  Block(Vector2(8, 4), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(9, 2), Star), // ⭐ Nova estrela
 ];
 
 final segment1 = [
@@ -46,26 +52,37 @@ final segment1 = [
   Block(Vector2(1, 1), PlatformBlock),
   Block(Vector2(1, 2), PlatformBlock),
   Block(Vector2(1, 3), PlatformBlock),
+  Block(Vector2(1, 4), Star), // ⭐ Nova estrela
   Block(Vector2(2, 6), PlatformBlock),
+  Block(Vector2(2, 7), Star), // ⭐ Nova estrela
   Block(Vector2(3, 6), PlatformBlock),
+  Block(Vector2(3, 7), Star), // ⭐ Nova estrela
   Block(Vector2(6, 5), PlatformBlock),
+  Block(Vector2(6, 6), Star), // ⭐ Nova estrela
   Block(Vector2(7, 5), PlatformBlock),
   Block(Vector2(7, 7), Star),
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 1), PlatformBlock),
+  Block(Vector2(8, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 5), PlatformBlock),
   Block(Vector2(8, 6), WaterEnemy),
   Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(9, 3), Star), // ⭐ Nova estrela
 ];
 
 final segment2 = [
   Block(Vector2(0, 0), GroundBlock),
+  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
+  Block(Vector2(1, 2), Star), // ⭐ Nova estrela
   Block(Vector2(2, 0), GroundBlock),
+  Block(Vector2(2, 2), Star), // ⭐ Nova estrela
   Block(Vector2(3, 0), GroundBlock),
   Block(Vector2(3, 3), PlatformBlock),
+  Block(Vector2(3, 4), Star), // ⭐ Nova estrela
   Block(Vector2(4, 0), GroundBlock),
   Block(Vector2(4, 3), PlatformBlock),
+  Block(Vector2(4, 4), Star), // ⭐ Nova estrela
   Block(Vector2(5, 0), GroundBlock),
   Block(Vector2(5, 3), PlatformBlock),
   Block(Vector2(5, 4), WaterEnemy),
@@ -75,44 +92,89 @@ final segment2 = [
   Block(Vector2(6, 5), PlatformBlock),
   Block(Vector2(6, 7), Star),
   Block(Vector2(7, 0), GroundBlock),
+  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
+  Block(Vector2(8, 2), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(9, 2), Star), // ⭐ Nova estrela
 ];
 
 final segment3 = [
   Block(Vector2(0, 0), GroundBlock),
+  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(1, 1), WaterEnemy),
   Block(Vector2(2, 0), GroundBlock),
   Block(Vector2(2, 1), PlatformBlock),
   Block(Vector2(2, 2), PlatformBlock),
+  Block(Vector2(2, 3), Star), // ⭐ Nova estrela
   Block(Vector2(4, 4), PlatformBlock),
+  Block(Vector2(5, 5), Star), // ⭐ Nova estrela
   Block(Vector2(6, 6), PlatformBlock),
+  Block(Vector2(6, 7), Star), // ⭐ Nova estrela
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(7, 1), PlatformBlock),
+  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 8), Star),
   Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(9, 3), Star), // ⭐ Nova estrela
 ];
 
 final segment4 = [
   Block(Vector2(0, 0), GroundBlock),
+  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
+  Block(Vector2(1, 2), Star), // ⭐ Nova estrela
   Block(Vector2(2, 0), GroundBlock),
   Block(Vector2(2, 3), PlatformBlock),
+  Block(Vector2(2, 4), Star), // ⭐ Nova estrela
   Block(Vector2(3, 0), GroundBlock),
   Block(Vector2(3, 1), WaterEnemy),
   Block(Vector2(3, 3), PlatformBlock),
+  Block(Vector2(3, 4), Star), // ⭐ Nova estrela
   Block(Vector2(4, 0), GroundBlock),
+  Block(Vector2(4, 2), Star), // ⭐ Nova estrela
   Block(Vector2(5, 0), GroundBlock),
   Block(Vector2(5, 5), PlatformBlock),
+  Block(Vector2(5, 6), Star), // ⭐ Nova estrela
   Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(6, 5), PlatformBlock),
   Block(Vector2(6, 7), Star),
   Block(Vector2(7, 0), GroundBlock),
+  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 3), PlatformBlock),
+  Block(Vector2(8, 4), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
   Block(Vector2(9, 1), WaterEnemy),
   Block(Vector2(9, 3), PlatformBlock),
+  Block(Vector2(9, 5), Star), // ⭐ Nova estrela
+];
+
+// Novo segmento com foco em estrelas
+final segment5 = [
+  Block(Vector2(0, 0), GroundBlock),
+  Block(Vector2(1, 0), GroundBlock),
+  Block(Vector2(1, 2), Star), // ⭐
+  Block(Vector2(2, 0), GroundBlock),
+  Block(Vector2(2, 3), Star), // ⭐
+  Block(Vector2(3, 0), GroundBlock),
+  Block(Vector2(3, 2), PlatformBlock),
+  Block(Vector2(3, 4), Star), // ⭐
+  Block(Vector2(4, 0), GroundBlock),
+  Block(Vector2(4, 3), PlatformBlock),
+  Block(Vector2(4, 5), Star), // ⭐
+  Block(Vector2(5, 0), GroundBlock),
+  Block(Vector2(5, 2), PlatformBlock),
+  Block(Vector2(5, 4), PlatformBlock),
+  Block(Vector2(5, 6), Star), // ⭐
+  Block(Vector2(6, 0), GroundBlock),
+  Block(Vector2(6, 3), Star), // ⭐
+  Block(Vector2(7, 0), GroundBlock),
+  Block(Vector2(7, 2), Star), // ⭐
+  Block(Vector2(8, 0), GroundBlock),
+  Block(Vector2(8, 4), Star), // ⭐
+  Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(9, 3), Star), // ⭐
 ];

@@ -266,7 +266,7 @@
     {
         "id": 23,
         "disponivel": true,
-        "question": "Qual letra falta em '_uva' para formar 'uva'?",
+        "question": "Qual letra falta em 'u_a' para formar 'uva'?",
         "options": [
             "U",
             "A",

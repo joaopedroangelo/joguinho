@@ -18,4 +18,5 @@ flutter:
     - assets/images/
     - assets/voices/welcomes/welcome01.mp3
     - assets/voices/welcomes/welcome02.mp3
+    - assets/questions/questions.json
 

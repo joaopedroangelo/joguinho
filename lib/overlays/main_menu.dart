@@ -147,9 +147,12 @@ class _MainMenuState extends State<MainMenu> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.volume_up, color: Colors.black87),
+                      icon: const Text(
+                        '🔊', // Emoji de som
+                        style: TextStyle(fontSize: 24), // Tamanho do emoji
+                      ),
                       onPressed: _playRandomWelcome,
-                    ),
+                    )
                   ],
                 ),
 
@@ -179,7 +182,7 @@ class _MainMenuState extends State<MainMenu> {
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: 'Ano (ex: 2018)',
-                        prefixIcon: const Icon(Icons.abc),
+                        prefixIcon: const Icon(Icons.abc_outlined),
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 14, horizontal: 12),
@@ -228,16 +231,6 @@ class _MainMenuState extends State<MainMenu> {
                 const SizedBox(height: 10),
 
                 // ajuda curta — apenas ícone e texto mínimo
-                Opacity(
-                  opacity: 0.9,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.keyboard_alt, size: 14, color: Colors.black54),
-                      SizedBox(width: 6),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),

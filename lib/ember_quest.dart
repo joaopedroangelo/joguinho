@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'actors/ember.dart';
 import 'actors/water_enemy.dart';
@@ -16,59 +18,9 @@ class EmberQuestGame extends FlameGame
     with HasCollisionDetection, HasKeyboardHandlerComponents {
   EmberQuestGame();
 
-  // Lista de questões educacionais
-  final List<Map<String, dynamic>> questions = [
-    {
-      "question": "Qual letra inicia a palavra 'Abacaxi'?",
-      "options": ["A", "B", "C", "D"],
-      "answer": "A"
-    },
-    {
-      "question": "Qual é a cor do céu em um dia claro?",
-      "options": ["Azul", "Verde", "Amarelo", "Vermelho"],
-      "answer": "Azul"
-    },
-    {
-      "question": "Quantas pernas tem um cachorro?",
-      "options": ["2", "4", "6", "8"],
-      "answer": "4"
-    },
-    {
-      "question": "Qual letra inicia a palavra 'Banana'?",
-      "options": ["B", "M", "P", "T"],
-      "answer": "B"
-    },
-    {
-      "question": "Qual é a primeira letra da palavra 'Lâmpada'?",
-      "options": ["L", "R", "S", "T"],
-      "answer": "L"
-    },
-    {
-      "question": "Qual é a primeira vogal da palavra 'elefante'?",
-      "options": ["A", "E", "I", "O"],
-      "answer": "E"
-    },
-    {
-      "question": "Qual letra inicia a palavra 'Livro'?",
-      "options": ["L", "V", "F", "P"],
-      "answer": "L"
-    },
-    {
-      "question": "Quantas sílabas tem a palavra 'bola'?",
-      "options": ["1", "2", "3", "4"],
-      "answer": "2"
-    },
-    {
-      "question": "Qual é a letra final da palavra 'sol'?",
-      "options": ["S", "O", "L", "R"],
-      "answer": "L"
-    },
-    {
-      "question": "Qual palavra rima com 'pato'?",
-      "options": ["Rato", "Mesa", "Sol", "Luz"],
-      "answer": "Rato"
-    },
-  ];
+  // Lista de questões carregadas do JSON
+  List<Map<String, dynamic>> questions = [];
+  int currentQuestionIndex = 0;
 
   late EmberPlayer _ember;
   late double lastBlockXPosition = 0.0;
@@ -104,6 +56,9 @@ class EmberQuestGame extends FlameGame
     ]);
     camera.viewfinder.anchor = Anchor.topLeft;
 
+    // Carregar questões do JSON
+    await _loadQuestions();
+
     // Inicializa joystick
     joystick = JoystickComponent(
       knob: CircleComponent(
@@ -123,6 +78,45 @@ class EmberQuestGame extends FlameGame
     add(joystick);
 
     initializeGame(loadHud: true);
+  }
+
+  // Método para carregar questões do JSON
+  Future<void> _loadQuestions() async {
+    try {
+      final String jsonString =
+          await rootBundle.loadString('assets/questions/questions.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+
+      // Filtrar apenas questões disponíveis
+      questions = jsonList
+          .where((question) => question['disponivel'] == true)
+          .toList()
+          .cast<Map<String, dynamic>>();
+
+      // Ordenar por ID
+      questions.sort((a, b) => a['id'].compareTo(b['id']));
+
+      print('${questions.length} questões carregadas do JSON');
+    } catch (e) {
+      print('Erro ao carregar questões: $e');
+      // Fallback para questões básicas em caso de erro
+      questions = [
+        {
+          "id": 1,
+          "disponivel": true,
+          "question": "Teste",
+          "options": ["A", "B", "C", "D"],
+          "answer": "A"
+        },
+        {
+          "id": 2,
+          "disponivel": true,
+          "question": "Qual é a cor do céu em um dia claro?",
+          "options": ["Azul", "Verde", "Amarelo", "Vermelho"],
+          "answer": "Azul"
+        },
+      ];
+    }
   }
 
   @override
@@ -196,18 +190,16 @@ class EmberQuestGame extends FlameGame
   void onStarCollected() {
     starsCollected++;
 
-    // Se já há uma questão ativa, não faça nada
-    if (isQuestionActive) return;
+    if (isQuestionActive || questions.isEmpty) return;
 
-    // Pause o jogo
     pauseEngine();
     isQuestionActive = true;
 
-    // Selecione uma questão aleatória
+    // Selecionar questão aleatória
     final random = Random();
-    currentQuestion = questions[random.nextInt(questions.length)];
+    currentQuestionIndex = random.nextInt(questions.length);
+    currentQuestion = questions[currentQuestionIndex];
 
-    // Mostre o overlay de questão
     overlays.add('QuestionOverlay');
   }
 

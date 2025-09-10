@@ -17,9 +17,9 @@ class EmberPlayer extends SpriteComponent
 
   final Vector2 velocity = Vector2.zero();
   final Vector2 fromAbove = Vector2(0, -1);
-  final double gravity = 15;
-  final double jumpSpeed = 600;
-  final double fallMultiplier = 3; // aceleração extra na queda
+  final double gravity = 30;
+  final double jumpSpeed = 1000;
+  final double fallMultiplier = 10; // aceleração extra na queda
   final double moveSpeed = 200;
   final double terminalVelocity = 150;
   int horizontalDirection = 0;

@@ -1,5 +1,17 @@
 [
     {
+        "id": 3,
+        "disponivel": true,
+        "question": "Quantas patas tem um cachorro?",
+        "options": [
+            "2",
+            "4",
+            "6",
+            "8"
+        ],
+        "answer": "4"
+    },
+    {
         "id": 1,
         "disponivel": true,
         "question": "Qual letra inicia a palavra 'Abacaxi'?",
@@ -22,18 +34,6 @@
             "Vermelho"
         ],
         "answer": "Azul"
-    },
-    {
-        "id": 3,
-        "disponivel": true,
-        "question": "Quantas pernas tem um cachorro?",
-        "options": [
-            "2",
-            "4",
-            "6",
-            "8"
-        ],
-        "answer": "4"
     },
     {
         "id": 4,

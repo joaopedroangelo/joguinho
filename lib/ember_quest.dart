@@ -69,7 +69,7 @@ class EmberQuestGame extends FlameGame
 
   @override
   void update(double dt) {
-    if (health <= 0) {
+    if (health <= 0 && !overlays.isActive('GameOver')) {
       overlays.add('GameOver');
     }
 

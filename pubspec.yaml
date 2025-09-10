@@ -11,8 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   flame: 1.32.0
+  audioplayers: 6.5.1 
 
 flutter:
   assets:
     - assets/images/
+    - assets/voices/welcomes/welcome01.mp3
+    - assets/voices/welcomes/welcome02.mp3
 

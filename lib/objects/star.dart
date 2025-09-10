@@ -1,3 +1,4 @@
+import 'package:EscreveAI/actors/ember.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -5,7 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../ember_quest.dart';
 
-class Star extends SpriteComponent with HasGameReference<EmberQuestGame> {
+class Star extends SpriteComponent
+    with HasGameReference<EmberQuestGame>, CollisionCallbacks {
   final Vector2 gridPosition;
   double xOffset;
 
@@ -24,7 +26,13 @@ class Star extends SpriteComponent with HasGameReference<EmberQuestGame> {
       (gridPosition.x * size.x) + xOffset + (size.x / 2),
       game.size.y - (gridPosition.y * size.y) - (size.y / 2),
     );
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+
+    // Adicione um hitbox para detectar colisões
+    add(RectangleHitbox(
+      collisionType: CollisionType.passive,
+      isSolid: true,
+    ));
+
     add(
       SizeEffect.by(
         Vector2.all(-24),
@@ -36,6 +44,23 @@ class Star extends SpriteComponent with HasGameReference<EmberQuestGame> {
         ),
       ),
     );
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    // Verifique se colidiu com o jogador
+    if (other is EmberPlayer) {
+      // Notifique o jogo que uma estrela foi coletada
+      game.onStarCollected();
+
+      // Remova a estrela do jogo
+      removeFromParent();
+    }
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:EscreveAI/overlays/question.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ void main() {
         overlayBuilderMap: {
           'MainMenu': (_, game) => MainMenu(game: game),
           'GameOver': (_, game) => GameOver(game: game),
+          'QuestionOverlay': (_, game) => QuestionOverlay(game: game),
         },
         initialActiveOverlays: const ['MainMenu'],
       ),

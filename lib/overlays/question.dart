@@ -1,38 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:EscreveAI/ember_quest.dart';
 
-class QuestionOverlay extends StatelessWidget {
+class QuestionOverlay extends StatefulWidget {
   final EmberQuestGame game;
-  final String question;
-  final List<String> options;
-  final void Function(String) onAnswerSelected;
 
   const QuestionOverlay({
     super.key,
     required this.game,
-    required this.question,
-    required this.options,
-    required this.onAnswerSelected,
   });
 
   @override
+  State<QuestionOverlay> createState() => _QuestionOverlayState();
+}
+
+class _QuestionOverlayState extends State<QuestionOverlay> {
+  @override
   Widget build(BuildContext context) {
+    final currentQuestion = widget.game.getCurrentQuestion();
+
+    if (currentQuestion == null) {
+      return Container();
+    }
+
     return Stack(
       children: [
-        // Fundo semi-transparente com padrão infantil
+        // Fundo semi-transparente
         Container(
-          decoration: BoxDecoration(
-            color: Colors.blue[100]!.withOpacity(0.9),
-            image: DecorationImage(
-              image: AssetImage(
-                  'assets/images/background_pattern.png'), // Padrão infantil
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.1),
-                BlendMode.dstATop,
-              ),
-            ),
-          ),
+          color: Colors.blue[100]!.withOpacity(0.9),
           width: double.infinity,
           height: double.infinity,
         ),
@@ -65,9 +59,10 @@ class QuestionOverlay extends StatelessWidget {
                   // Ícone decorativo
                   Container(
                     margin: const EdgeInsets.only(bottom: 15),
-                    child: Image.asset(
-                      'assets/images/quiz_icon.png', // Ícone de lápis ou livro
-                      height: 60,
+                    child: const Icon(
+                      Icons.school,
+                      size: 60,
+                      color: Colors.blue,
                     ),
                   ),
 
@@ -83,13 +78,12 @@ class QuestionOverlay extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      question,
+                      currentQuestion['question'],
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.deepPurple,
-                        fontFamily: 'ComicNeue', // Fonte infantil
                       ),
                     ),
                   ),
@@ -97,7 +91,7 @@ class QuestionOverlay extends StatelessWidget {
                   const SizedBox(height: 25),
 
                   // Opções de resposta
-                  ...options.asMap().entries.map(
+                  ...currentQuestion['options'].asMap().entries.map(
                     (entry) {
                       int index = entry.key;
                       String option = entry.value;
@@ -136,7 +130,6 @@ class QuestionOverlay extends StatelessWidget {
                             textStyle: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              fontFamily: 'ComicNeue',
                             ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
@@ -144,8 +137,8 @@ class QuestionOverlay extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            // Efeito de som ao clicar (pode ser implementado)
-                            onAnswerSelected(option);
+                            // Notifique o jogo sobre a resposta selecionada
+                            widget.game.onQuestionAnswered(option);
                           },
                           child: Text(
                             option,

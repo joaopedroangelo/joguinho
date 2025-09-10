@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart'; // Adicione este import
 
 import 'actors/ember.dart';
 import 'actors/water_enemy.dart';
@@ -36,6 +37,10 @@ class EmberQuestGame extends FlameGame
   // Variáveis para gerenciar as questões
   Map<String, dynamic>? currentQuestion;
   bool isQuestionActive = false;
+
+  // Player de áudio
+  final AudioPlayer audioPlayer = AudioPlayer();
+  String? currentAudioPath;
 
   // Adicionando joystick
   late JoystickComponent joystick;
@@ -78,45 +83,6 @@ class EmberQuestGame extends FlameGame
     add(joystick);
 
     initializeGame(loadHud: true);
-  }
-
-  // Método para carregar questões do JSON
-  Future<void> _loadQuestions() async {
-    try {
-      final String jsonString =
-          await rootBundle.loadString('assets/questions/questions.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
-
-      // Filtrar apenas questões disponíveis
-      questions = jsonList
-          .where((question) => question['disponivel'] == true)
-          .toList()
-          .cast<Map<String, dynamic>>();
-
-      // Ordenar por ID
-      questions.sort((a, b) => a['id'].compareTo(b['id']));
-
-      print('${questions.length} questões carregadas do JSON');
-    } catch (e) {
-      print('Erro ao carregar questões: $e');
-      // Fallback para questões básicas em caso de erro
-      questions = [
-        {
-          "id": 1,
-          "disponivel": true,
-          "question": "Teste",
-          "options": ["A", "B", "C", "D"],
-          "answer": "A"
-        },
-        {
-          "id": 2,
-          "disponivel": true,
-          "question": "Qual é a cor do céu em um dia claro?",
-          "options": ["Azul", "Verde", "Amarelo", "Vermelho"],
-          "answer": "Azul"
-        },
-      ];
-    }
   }
 
   @override
@@ -186,6 +152,45 @@ class EmberQuestGame extends FlameGame
     initializeGame(loadHud: false);
   }
 
+  // Método para carregar questões do JSON
+  Future<void> _loadQuestions() async {
+    try {
+      final String jsonString =
+          await rootBundle.loadString('assets/questions/questions.json');
+      final List<dynamic> jsonList = json.decode(jsonString);
+
+      // Filtrar apenas questões disponíveis
+      questions = jsonList
+          .where((question) => question['disponivel'] == true)
+          .toList()
+          .cast<Map<String, dynamic>>();
+
+      // Ordenar por ID
+      questions.sort((a, b) => a['id'].compareTo(b['id']));
+
+      print('${questions.length} questões carregadas do JSON');
+    } catch (e) {
+      print('Erro ao carregar questões: $e');
+      // Fallback para questões básicas em caso de erro
+      questions = [
+        {
+          "id": 1,
+          "disponivel": true,
+          "question": "Teste",
+          "options": ["A", "B", "C", "D"],
+          "answer": "A"
+        },
+        {
+          "id": 2,
+          "disponivel": true,
+          "question": "Qual é a cor do céu em um dia claro?",
+          "options": ["Azul", "Verde", "Amarelo", "Vermelho"],
+          "answer": "Azul"
+        },
+      ];
+    }
+  }
+
   // Método chamado quando uma estrela é coletada
   void onStarCollected() {
     starsCollected++;
@@ -200,13 +205,37 @@ class EmberQuestGame extends FlameGame
     currentQuestionIndex = random.nextInt(questions.length);
     currentQuestion = questions[currentQuestionIndex];
 
+    // Prepara o caminho do áudio baseado no ID da questão
+    final questionId = currentQuestion!['id'];
+    final formattedId = questionId.toString().padLeft(2, '0');
+    currentAudioPath = 'voices/questions_voices/$formattedId.mp3';
+
     overlays.add('QuestionOverlay');
+  }
+
+  // Método para tocar o áudio da questão atual
+  Future<void> playQuestionAudio() async {
+    if (currentAudioPath != null) {
+      try {
+        await audioPlayer.play(AssetSource(currentAudioPath!));
+      } catch (e) {
+        print('Erro ao reproduzir áudio: $e');
+      }
+    }
+  }
+
+  // Método para parar o áudio
+  Future<void> stopAudio() async {
+    await audioPlayer.stop();
   }
 
   // Método para processar a resposta da questão
   void onQuestionAnswered(String selectedAnswer) {
     // Verifique se a resposta está correta
     final isCorrect = selectedAnswer == currentQuestion!['answer'];
+
+    // Pare o áudio
+    stopAudio();
 
     // Dê feedback ao jogador
     if (isCorrect) {
@@ -224,6 +253,7 @@ class EmberQuestGame extends FlameGame
     resumeEngine();
     isQuestionActive = false;
     currentQuestion = null;
+    currentAudioPath = null;
   }
 
   // Método para obter a questão atual (usado pelo overlay)

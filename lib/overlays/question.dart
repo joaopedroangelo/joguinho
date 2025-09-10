@@ -15,6 +15,15 @@ class QuestionOverlay extends StatefulWidget {
 
 class _QuestionOverlayState extends State<QuestionOverlay> {
   @override
+  void initState() {
+    super.initState();
+    // Toca o áudio automaticamente quando a overlay é aberta
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.game.playQuestionAudio();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final currentQuestion = widget.game.getCurrentQuestion();
 
@@ -93,22 +102,35 @@ class _QuestionOverlayState extends State<QuestionOverlay> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Cabeçalho com emoji
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.yellow.shade100,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.orange,
-                          width: 3,
+                    // Cabeçalho com emoji e botão de áudio
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.yellow.shade100,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.orange,
+                              width: 3,
+                            ),
+                          ),
+                          child: Text(
+                            '🧩',
+                            style: TextStyle(fontSize: 40),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        '🧩', // Emoji de quebra-cabeça - representando desafio
-                        style: TextStyle(fontSize: 40),
-                      ),
+                        const SizedBox(width: 15),
+                        // Botão para repetir áudio
+                        IconButton(
+                          icon: Icon(Icons.volume_up, size: 30),
+                          color: Colors.purple.shade700,
+                          onPressed: () {
+                            widget.game.playQuestionAudio();
+                          },
+                        ),
+                      ],
                     ),
 
                     // Texto de incentivo
@@ -118,6 +140,18 @@ class _QuestionOverlayState extends State<QuestionOverlay> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.purple.shade700,
+                        fontFamily: 'ComicNeue',
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Instrução para ouvir
+                    Text(
+                      'Escute com atenção! 👂',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue.shade700,
                         fontFamily: 'ComicNeue',
                       ),
                     ),

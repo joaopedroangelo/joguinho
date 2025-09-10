@@ -268,12 +268,12 @@
         "disponivel": true,
         "question": "Qual letra falta em 'u_a' para formar 'uva'?",
         "options": [
-            "U",
+            "V",
             "A",
             "O",
             "E"
         ],
-        "answer": "U"
+        "answer": "V"
     },
     {
         "id": 24,

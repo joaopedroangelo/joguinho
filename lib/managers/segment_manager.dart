@@ -35,10 +35,8 @@ final segment0 = [
   Block(Vector2(5, 4), Star), // ⭐ Nova estrela
   Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(6, 3), PlatformBlock),
-  Block(Vector2(6, 4), Star), // ⭐ Nova estrela
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(7, 3), PlatformBlock),
-  Block(Vector2(7, 4), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 3), PlatformBlock),
   Block(Vector2(8, 4), Star), // ⭐ Nova estrela

@@ -4,6 +4,7 @@ import '../actors/water_enemy.dart';
 import '../objects/ground_block.dart';
 import '../objects/platform_block.dart';
 import '../objects/star.dart';
+import '../actors/prof_dora.dart';
 
 class Block {
   // gridPosition position is always segment based X,Y.
@@ -30,9 +31,10 @@ final segment0 = [
   Block(Vector2(3, 0), GroundBlock),
   Block(Vector2(4, 0), GroundBlock),
   Block(Vector2(5, 0), GroundBlock),
-  Block(Vector2(5, 1), WaterEnemy),
+  Block(Vector2(5, 1), TeacherDora),
   Block(Vector2(5, 3), PlatformBlock),
   Block(Vector2(5, 4), Star), // ⭐ Nova estrela
+  Block(Vector2(8, 4), WaterEnemy), // ⭐ Nova estrela
   Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(6, 3), PlatformBlock),
   Block(Vector2(7, 0), GroundBlock),

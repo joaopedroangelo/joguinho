@@ -1,5 +1,7 @@
+import 'package:EscreveAI/actors/prof_dora.dart';
 import 'package:EscreveAI/managers/player_data_manager.dart';
 import 'package:EscreveAI/managers/questions_manager.dart';
+import 'package:EscreveAI/overlays/dora_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -19,7 +21,7 @@ class EmberQuestGame extends FlameGame
 
   // Mantemos os campos do jogo para não quebrar outros arquivos
   late EmberPlayer _ember;
-
+  DateTime? lastDoraDialogTime;
   double lastBlockXPosition = 0.0;
   UniqueKey? lastBlockKey;
   double objectSpeed = 0.0;
@@ -28,7 +30,8 @@ class EmberQuestGame extends FlameGame
   int health = 3;
   double cloudSpeed = 0.0;
   String playerName = '';
-  int playerBirthYear = 0;
+  String playerGrade = '';
+  String parentEmail = '';
 
   // Gerenciamento de perguntas
   late QuestionsManager questionsManager;
@@ -49,6 +52,7 @@ class EmberQuestGame extends FlameGame
       'heart.png',
       'star.png',
       'water_enemy.png',
+      'prof.png'
     ]);
     camera.viewfinder.anchor = Anchor.topLeft;
 
@@ -67,6 +71,17 @@ class EmberQuestGame extends FlameGame
       margin: EdgeInsets.only(right: 60, bottom: canvasSize.y / 2 - 60),
     );
     add(joystick);
+
+    overlays.addEntry('doraDialog', (context, game) {
+      return DoraDialogOverlay(
+        game: this,
+        message: 'Olá, eu sou a professora Dora!',
+        onClose: () {
+          overlays.remove('doraDialog');
+          resumeEngine();
+        },
+      );
+    });
 
     initializeGame(loadHud: true);
   }
@@ -96,6 +111,8 @@ class EmberQuestGame extends FlameGame
         const (Star) =>
           Star(gridPosition: block.gridPosition, xOffset: xPositionOffset),
         const (WaterEnemy) => WaterEnemy(
+            gridPosition: block.gridPosition, xOffset: xPositionOffset),
+        const (TeacherDora) => TeacherDora(
             gridPosition: block.gridPosition, xOffset: xPositionOffset),
         _ => throw UnimplementedError(),
       };
@@ -135,8 +152,11 @@ class EmberQuestGame extends FlameGame
     } else {
       health--;
     }
+  }
 
-    // eventuais efeitos visuais/sons do jogo podem ser disparados aqui
+  bool get canShowDoraDialog {
+    if (lastDoraDialogTime == null) return true;
+    return DateTime.now().difference(lastDoraDialogTime!).inMinutes >= 1;
   }
 
   /// Compatibilidade: retorna a questão atual (caso algum código a use)
@@ -147,23 +167,32 @@ class EmberQuestGame extends FlameGame
     try {
       final playerData = await PlayerPreferences.getPlayerData();
       playerName = playerData['name'];
-      playerBirthYear = playerData['birthYear'];
+      playerGrade = playerData['grade'];
+      parentEmail = playerData['parentEmail'];
     } catch (e) {
       print('Erro ao carregar dados do jogador: $e');
     }
   }
 
-  Future<void> savePlayerData() async {
+  Future<void> savePlayerData({
+    required String name,
+    required String grade,
+    required String parentEmail,
+  }) async {
     try {
-      final age = DateTime.now().year - playerBirthYear;
-      final initials = _getInitials(playerName);
+      final initials = _getInitials(name);
 
       await PlayerPreferences.savePlayerData(
-        name: playerName,
-        birthYear: playerBirthYear,
-        age: age,
+        name: name,
+        grade: grade,
+        parentEmail: parentEmail,
         initials: initials,
       );
+
+      // Atualiza os dados locais
+      this.playerName = name;
+      this.playerGrade = grade;
+      this.parentEmail = parentEmail;
     } catch (e) {
       print('Erro ao salvar dados do jogador: $e');
     }

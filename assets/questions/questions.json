@@ -14,7 +14,7 @@
     {
         "id": 1,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Abacaxi'?",
+        "question": "Qual letra inicial da palavra 'Abacaxi'?",
         "options": [
             "A",
             "B",
@@ -38,7 +38,7 @@
     {
         "id": 4,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Banana'?",
+        "question": "Qual letra inicial da palavra 'Banana'?",
         "options": [
             "B",
             "M",
@@ -74,7 +74,7 @@
     {
         "id": 7,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Livro'?",
+        "question": "Qual letra inicial da palavra 'Livro'?",
         "options": [
             "L",
             "V",
@@ -122,7 +122,7 @@
     {
         "id": 11,
         "disponivel": true,
-        "question": "Qual letra falta em '_ão' para formar a palavra 'pão'?",
+        "question": "Qual letra falta em '_ão' para formar a palavra 'Pão'?",
         "options": [
             "B",
             "P",
@@ -146,7 +146,7 @@
     {
         "id": 13,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Urso'?",
+        "question": "Qual letra inicial da palavra 'Urso'?",
         "options": [
             "U",
             "O",
@@ -158,7 +158,7 @@
     {
         "id": 14,
         "disponivel": true,
-        "question": "Qual palavra começa com o som /k/?",
+        "question": "Qual palavra começa com o som k?",
         "options": [
             "Casa",
             "Gato",
@@ -230,7 +230,7 @@
     {
         "id": 20,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Xícara'?",
+        "question": "Qual letra inicial da palavra 'Xícara'?",
         "options": [
             "X",
             "Z",
@@ -290,7 +290,7 @@
     {
         "id": 25,
         "disponivel": true,
-        "question": "Qual letra inicia a palavra 'Zebra'?",
+        "question": "Qual letra inicial da palavra 'Zebra'?",
         "options": [
             "Z",
             "S",
@@ -340,24 +340,24 @@
         "disponivel": true,
         "question": "Qual sílaba é tônica em 'máquina'?",
         "options": [
-            "ma",
+            "má",
             "qui",
             "na",
             "qui"
         ],
-        "answer": "qui"
+        "answer": "má"
     },
     {
         "id": 30,
         "disponivel": true,
         "question": "Qual palavra rima com 'noite'?",
         "options": [
-            "Doite",
+            "Pernoite",
             "Coite",
             "Poite",
             "Moite"
         ],
-        "answer": "Doite"
+        "answer": "Pernoite"
     },
     {
         "id": 31,
@@ -377,8 +377,8 @@
         "question": "Complete: ___vação",
         "options": [
             "Obser",
-            "Conser",
-            "Adora",
+            "Con",
+            "Ado",
             "Culta"
         ],
         "answer": "Obser"
@@ -388,24 +388,24 @@
         "disponivel": true,
         "question": "Qual palavra é acentuada pela mesma regra de 'café'?",
         "options": [
-            "Você",
+            "Árvore",
             "Casa",
-            "Bola",
-            "Rato"
+            "Até",
+            "Macedônia"
         ],
-        "answer": "Você"
+        "answer": "Até"
     },
     {
         "id": 34,
         "disponivel": true,
         "question": "Qual palavra rima com 'estrela'?",
         "options": [
-            "Bela",
-            "Cela",
-            "Vela",
-            "Tela"
+            "Coestrela",
+            "Donzela",
+            "Pão",
+            "Capim"
         ],
-        "answer": "Bela"
+        "answer": "Coestrela"
     },
     {
         "id": 35,
@@ -417,7 +417,7 @@
             "4",
             "5"
         ],
-        "answer": "3"
+        "answer": "2"
     },
     {
         "id": 36,
@@ -436,10 +436,10 @@
         "disponivel": true,
         "question": "Qual sílaba é tônica em 'árvore'?",
         "options": [
-            "ar",
+            "ár",
             "vo",
             "re",
-            "ár"
+            "nenhuma"
         ],
         "answer": "ár"
     },
@@ -448,12 +448,12 @@
         "disponivel": true,
         "question": "Qual palavra rima com 'pássaro'?",
         "options": [
-            "Lássaro",
-            "Vássaro",
-            "Cássaro",
-            "Nássaro"
+            "Raro",
+            "Feijão",
+            "Arroz",
+            "Comum"
         ],
-        "answer": "Lássaro"
+        "answer": "Raro"
     },
     {
         "id": 39,
@@ -465,7 +465,7 @@
             "7",
             "8"
         ],
-        "answer": "6"
+        "answer": "5"
     },
     {
         "id": 40,
@@ -473,7 +473,7 @@
         "question": "Complete: ___ção",
         "options": [
             "Aten",
-            "Dire",
+            "Bez",
             "Ama",
             "Canta"
         ],
@@ -513,7 +513,7 @@
             "5",
             "6"
         ],
-        "answer": "4"
+        "answer": "3"
     },
     {
         "id": 44,
@@ -521,7 +521,7 @@
         "question": "Complete: Ilu___",
         "options": [
             "minação",
-            "são",
+            "cão",
             "tração",
             "ção"
         ],
@@ -533,23 +533,23 @@
         "question": "Qual sílaba é tônica em 'república'?",
         "options": [
             "re",
-            "pu",
+            "pú",
             "bli",
             "ca"
         ],
-        "answer": "pu"
+        "answer": "pú"
     },
     {
         "id": 46,
         "disponivel": true,
         "question": "Qual palavra rima com 'campo'?",
         "options": [
-            "Tempo",
-            "Campo",
-            "Dampo",
-            "Lampo"
+            "Pirilampo",
+            "Pescoço",
+            "Rosto",
+            "Gato"
         ],
-        "answer": "Tempo"
+        "answer": "Pirilampo"
     },
     {
         "id": 47,
@@ -561,7 +561,7 @@
             "8",
             "9"
         ],
-        "answer": "7"
+        "answer": "6"
     },
     {
         "id": 48,
@@ -580,12 +580,12 @@
         "disponivel": true,
         "question": "Qual palavra é acentuada por ser oxítona terminada em 'a'?",
         "options": [
-            "Sophiá",
+            "Sofá",
             "Máquina",
             "Árvore",
             "Lâmpada"
         ],
-        "answer": "Sophiá"
+        "answer": "Sofá"
     },
     {
         "id": 50,
@@ -594,7 +594,7 @@
         "options": [
             "Piso",
             "Caso",
-            "Riso",
+            "Casa",
             "Peso"
         ],
         "answer": "Piso"
@@ -609,7 +609,7 @@
             "6",
             "7"
         ],
-        "answer": "5"
+        "answer": "4"
     },
     {
         "id": 52,
@@ -617,9 +617,9 @@
         "question": "Complete: ___mação",
         "options": [
             "Infor",
-            "Confir",
-            "Afor",
-            "Refor"
+            "Confi",
+            "Afo",
+            "Refo"
         ],
         "answer": "Infor"
     },
@@ -640,9 +640,9 @@
         "disponivel": true,
         "question": "Qual palavra rima com 'vento'?",
         "options": [
-            "Sento",
-            "Dento",
-            "Tento",
+            "Lápis",
+            "Senta",
+            "Venta",
             "Lento"
         ],
         "answer": "Lento"

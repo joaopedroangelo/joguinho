@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:EscreveAI/managers/player_data_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-
 import '../ember_quest.dart';
 
 class MainMenu extends StatefulWidget {
@@ -23,6 +23,26 @@ class _MainMenuState extends State<MainMenu> {
     'voices/welcomes/welcome02.mp3',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedData();
+  }
+
+  Future<void> _loadSavedData() async {
+    try {
+      final playerData = await PlayerPreferences.getPlayerData();
+      setState(() {
+        _nomeController.text = playerData['name'];
+        if (playerData['birthYear'] > 0) {
+          _anoController.text = playerData['birthYear'].toString();
+        }
+      });
+    } catch (e) {
+      print('Erro ao carregar dados salvos: $e');
+    }
+  }
+
   Future<void> _playRandomWelcome() async {
     final random = Random().nextInt(_welcomeAudios.length);
     await _audioPlayer.play(AssetSource(_welcomeAudios[random]));
@@ -37,9 +57,9 @@ class _MainMenuState extends State<MainMenu> {
         ano <= DateTime.now().year;
   }
 
-  int? get computedAge {
+  int get computedAge {
     final ano = int.tryParse(_anoController.text);
-    if (ano == null) return null;
+    if (ano == null) return 0;
     return DateTime.now().year - ano;
   }
 
@@ -54,6 +74,29 @@ class _MainMenuState extends State<MainMenu> {
       final b = parts.last.substring(0, 1);
       return (a + b).toUpperCase();
     }
+  }
+
+  Future<void> _saveAndStartGame() async {
+    if (!isFormValid) return;
+
+    final nome = _nomeController.text.trim();
+    final ano = int.parse(_anoController.text);
+    final idade = computedAge;
+
+    // Salvar nos preferences
+    await PlayerPreferences.savePlayerData(
+      name: nome,
+      birthYear: ano,
+      age: idade,
+      initials: initials,
+    );
+
+    // Atualizar o game object
+    widget.game.playerName = nome;
+    widget.game.playerBirthYear = ano;
+
+    // Fechar o menu
+    widget.game.overlays.remove('MainMenu');
   }
 
   @override
@@ -202,15 +245,7 @@ class _MainMenuState extends State<MainMenu> {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: isFormValid
-                        ? () {
-                            // salvar no jogo se quiser (descomente se EmberQuestGame aceitar)
-                            // widget.game.playerName = _nomeController.text.trim();
-                            // widget.game.playerYear = int.parse(_anoController.text.trim());
-
-                            widget.game.overlays.remove('MainMenu');
-                          }
-                        : null,
+                    onPressed: isFormValid ? _saveAndStartGame : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           isFormValid ? accent : Colors.grey.shade400,

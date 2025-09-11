@@ -1,11 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
+import 'package:EscreveAI/managers/player_data_manager.dart';
+import 'package:EscreveAI/managers/questions_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:audioplayers/audioplayers.dart'; // Adicione este import
 
 import 'actors/ember.dart';
 import 'actors/water_enemy.dart';
@@ -19,35 +17,28 @@ class EmberQuestGame extends FlameGame
     with HasCollisionDetection, HasKeyboardHandlerComponents {
   EmberQuestGame();
 
-  // Lista de questões carregadas do JSON
-  List<Map<String, dynamic>> questions = [];
-  int currentQuestionIndex = 0;
-
+  // Mantemos os campos do jogo para não quebrar outros arquivos
   late EmberPlayer _ember;
-  late double lastBlockXPosition = 0.0;
-  late UniqueKey lastBlockKey;
+
+  double lastBlockXPosition = 0.0;
+  UniqueKey? lastBlockKey;
+  double objectSpeed = 0.0;
 
   int starsCollected = 0;
   int health = 3;
   double cloudSpeed = 0.0;
-  double objectSpeed = 0.0;
   String playerName = '';
   int playerBirthYear = 0;
 
-  // Variáveis para gerenciar as questões
-  Map<String, dynamic>? currentQuestion;
+  // Gerenciamento de perguntas
+  late QuestionsManager questionsManager;
   bool isQuestionActive = false;
 
-  // Player de áudio
-  final AudioPlayer audioPlayer = AudioPlayer();
-  String? currentAudioPath;
-
-  // Adicionando joystick
+  // Joystick
   late JoystickComponent joystick;
 
   @override
   Future<void> onLoad() async {
-    //debugMode = true; // Uncomment to see the bounding boxes
     await images.loadAll([
       'block.png',
       'lapis.png',
@@ -61,24 +52,19 @@ class EmberQuestGame extends FlameGame
     ]);
     camera.viewfinder.anchor = Anchor.topLeft;
 
-    // Carregar questões do JSON
-    await _loadQuestions();
+    // Inicializa QuestionsManager (passando referência do game)
+    questionsManager = QuestionsManager(this);
+    await questionsManager.loadQuestions();
 
-    // Inicializa joystick
+    await _loadPlayerData();
+
+    // Inicializa joystick (posicionamento básico)
     joystick = JoystickComponent(
       knob: CircleComponent(
-        radius: 20,
-        paint: Paint()..color = Colors.blueAccent,
-      ),
+          radius: 20, paint: Paint()..color = Colors.blueAccent),
       background: CircleComponent(
-        radius: 50,
-        paint: Paint()..color = Colors.blue.withOpacity(0.5),
-      ),
-      margin: EdgeInsets.only(
-        right: 60, // distância da borda direita
-        bottom:
-            canvasSize.y / 2 - 60, // sobe para aproximadamente metade da tela
-      ),
+          radius: 50, paint: Paint()..color = Colors.blue.withOpacity(0.5)),
+      margin: EdgeInsets.only(right: 60, bottom: canvasSize.y / 2 - 60),
     );
     add(joystick);
 
@@ -98,29 +84,19 @@ class EmberQuestGame extends FlameGame
   }
 
   @override
-  Color backgroundColor() {
-    return const Color.fromARGB(255, 173, 223, 247);
-  }
+  Color backgroundColor() => const Color.fromARGB(255, 173, 223, 247);
 
   void loadGameSegments(int segmentIndex, double xPositionOffset) {
     for (final block in segments[segmentIndex]) {
       final component = switch (block.blockType) {
         const (GroundBlock) => GroundBlock(
-            gridPosition: block.gridPosition,
-            xOffset: xPositionOffset,
-          ),
+            gridPosition: block.gridPosition, xOffset: xPositionOffset),
         const (PlatformBlock) => PlatformBlock(
-            gridPosition: block.gridPosition,
-            xOffset: xPositionOffset,
-          ),
-        const (Star) => Star(
-            gridPosition: block.gridPosition,
-            xOffset: xPositionOffset,
-          ),
+            gridPosition: block.gridPosition, xOffset: xPositionOffset),
+        const (Star) =>
+          Star(gridPosition: block.gridPosition, xOffset: xPositionOffset),
         const (WaterEnemy) => WaterEnemy(
-            gridPosition: block.gridPosition,
-            xOffset: xPositionOffset,
-          ),
+            gridPosition: block.gridPosition, xOffset: xPositionOffset),
         _ => throw UnimplementedError(),
       };
       world.add(component);
@@ -129,135 +105,79 @@ class EmberQuestGame extends FlameGame
 
   void initializeGame({required bool loadHud}) {
     final segmentsToLoad = (size.x / 640).ceil();
-    segmentsToLoad.clamp(0, segments.length);
-
     for (var i = 0; i <= segmentsToLoad; i++) {
       loadGameSegments(i, (640 * i).toDouble());
     }
 
-    _ember = EmberPlayer(
-      position: Vector2(128, canvasSize.y - 128),
-    );
+    _ember = EmberPlayer(position: Vector2(128, canvasSize.y - 128));
     world.add(_ember);
-    if (loadHud) {
-      camera.viewport.add(Hud());
-    }
+    if (loadHud) camera.viewport.add(Hud());
   }
 
   void reset() {
     starsCollected = 0;
     health = 3;
     isQuestionActive = false;
-    currentQuestion = null;
+    questionsManager.resetQuestions();
     initializeGame(loadHud: false);
   }
 
-  // Método para carregar questões do JSON
-  Future<void> _loadQuestions() async {
-    try {
-      final String jsonString =
-          await rootBundle.loadString('assets/questions/questions.json');
-      final List<dynamic> jsonList = json.decode(jsonString);
-
-      // Filtrar apenas questões disponíveis
-      questions = jsonList
-          .where((question) => question['disponivel'] == true)
-          .toList()
-          .cast<Map<String, dynamic>>();
-
-      // Ordenar por ID
-      questions.sort((a, b) => a['id'].compareTo(b['id']));
-
-      print('${questions.length} questões carregadas do JSON');
-    } catch (e) {
-      print('Erro ao carregar questões: $e');
-      // Fallback para questões básicas em caso de erro
-      questions = [
-        {
-          "id": 1,
-          "disponivel": true,
-          "question": "Teste",
-          "options": ["A", "B", "C", "D"],
-          "answer": "A"
-        },
-        {
-          "id": 2,
-          "disponivel": true,
-          "question": "Qual é a cor do céu em um dia claro?",
-          "options": ["Azul", "Verde", "Amarelo", "Vermelho"],
-          "answer": "Azul"
-        },
-      ];
-    }
-  }
-
-  // Método chamado quando uma estrela é coletada
+  /// Chamado por Star quando coletada
   void onStarCollected() {
     starsCollected++;
-
-    if (isQuestionActive || questions.isEmpty) return;
-
-    pauseEngine();
-    isQuestionActive = true;
-
-    // Selecionar questão aleatória
-    final random = Random();
-    currentQuestionIndex = random.nextInt(questions.length);
-    currentQuestion = questions[currentQuestionIndex];
-
-    // Prepara o caminho do áudio baseado no ID da questão
-    final questionId = currentQuestion!['id'];
-    final formattedId = questionId.toString().padLeft(2, '0');
-    currentAudioPath = 'voices/questions_voices/$formattedId.mp3';
-
-    overlays.add('QuestionOverlay');
+    questionsManager.maybeAskQuestion();
   }
 
-  // Método para tocar o áudio da questão atual
-  Future<void> playQuestionAudio() async {
-    if (currentAudioPath != null) {
-      try {
-        await audioPlayer.play(AssetSource(currentAudioPath!));
-      } catch (e) {
-        print('Erro ao reproduzir áudio: $e');
-      }
-    }
-  }
-
-  // Método para parar o áudio
-  Future<void> stopAudio() async {
-    await audioPlayer.stop();
-  }
-
-  // Método para processar a resposta da questão
-  void onQuestionAnswered(String selectedAnswer) {
-    // Verifique se a resposta está correta
-    final isCorrect = selectedAnswer == currentQuestion!['answer'];
-
-    // Pare o áudio
-    stopAudio();
-
-    // Dê feedback ao jogador
+  /// Aplica somente o efeito da resposta (pontua/penaliza) — sem fechar overlay.
+  void applyAnswerResult(String selectedAnswer, bool isCorrect) {
     if (isCorrect) {
-      // Recompense o jogador por responder corretamente
-      starsCollected += 2; // Bônus por resposta correta
+      starsCollected += 2;
     } else {
-      // Penalize o jogador por responder incorretamente
       health--;
     }
 
-    // Remova o overlay
-    overlays.remove('QuestionOverlay');
-
-    // Retome o jogo
-    resumeEngine();
-    isQuestionActive = false;
-    currentQuestion = null;
-    currentAudioPath = null;
+    // eventuais efeitos visuais/sons do jogo podem ser disparados aqui
   }
 
-  // Método para obter a questão atual (usado pelo overlay)
-  Map<String, dynamic>? getCurrentQuestion() {
-    return currentQuestion;
+  /// Compatibilidade: retorna a questão atual (caso algum código a use)
+  Map<String, dynamic>? getCurrentQuestion() =>
+      questionsManager.currentQuestion;
+
+  Future<void> _loadPlayerData() async {
+    try {
+      final playerData = await PlayerPreferences.getPlayerData();
+      playerName = playerData['name'];
+      playerBirthYear = playerData['birthYear'];
+    } catch (e) {
+      print('Erro ao carregar dados do jogador: $e');
+    }
+  }
+
+  Future<void> savePlayerData() async {
+    try {
+      final age = DateTime.now().year - playerBirthYear;
+      final initials = _getInitials(playerName);
+
+      await PlayerPreferences.savePlayerData(
+        name: playerName,
+        birthYear: playerBirthYear,
+        age: age,
+        initials: initials,
+      );
+    } catch (e) {
+      print('Erro ao salvar dados do jogador: $e');
+    }
+  }
+
+  String _getInitials(String name) {
+    if (name.isEmpty) return '🙂';
+    final parts = name.split(RegExp(r'\s+'));
+    if (parts.length == 1) {
+      return parts.first.substring(0, 1).toUpperCase();
+    } else {
+      final a = parts.first.substring(0, 1);
+      final b = parts.last.substring(0, 1);
+      return (a + b).toUpperCase();
+    }
   }
 }

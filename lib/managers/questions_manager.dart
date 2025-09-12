@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 /// Gerencia carregamento, seleção, áudio e verificação das questões.
-/// Observação: recebe uma referência ao [EmberQuestGame] para pausar/retomar
-/// e abrir a overlay.
 class QuestionsManager {
   final EmberQuestGame game;
 
@@ -16,6 +14,29 @@ class QuestionsManager {
   List<Map<String, dynamic>> _questions = [];
   Map<String, dynamic>? _currentQuestion;
   String? _currentAudioPath;
+
+  // Listas de áudios de feedback
+  final List<String> _correctFeedbackAudios = [
+    'audio/dora_voices/feedbacks_correct/dora_acerto_3.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_4.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_5.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_6.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_7.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_8.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_9.mp3',
+    'audio/dora_voices/feedbacks_correct/dora_acerto_10.mp3',
+  ];
+
+  final List<String> _errorFeedbackAudios = [
+    'audio/dora_voices/feedbacks_error/dora_erro_1.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_2.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_3.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_6.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_7.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_8.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_9.mp3',
+    'audio/dora_voices/feedbacks_error/dora_erro_10.mp3',
+  ];
 
   bool get hasQuestions => _questions.isNotEmpty;
   Map<String, dynamic>? get currentQuestion => _currentQuestion;
@@ -75,7 +96,6 @@ class QuestionsManager {
   }
 
   /// Deve ser chamado quando o jogo decide tentar perguntar (ex: coleta de estrela)
-  /// Pausa o motor, marca isQuestionActive no game, abre overlay e toca áudio.
   void maybeAskQuestion() {
     if (game.isQuestionActive || _questions.isEmpty) return;
 
@@ -106,10 +126,31 @@ class QuestionsManager {
   }
 
   /// Apenas checa se a resposta bate com a resposta correta.
-  /// Não limpa o estado: a overlay é responsável por limpar após timeout.
   bool checkAnswer(String selectedAnswer) {
     if (_currentQuestion == null) return false;
     return selectedAnswer == _currentQuestion!['answer'];
+  }
+
+  /// Toca áudio de feedback para resposta correta
+  Future<void> playCorrectFeedback() async {
+    final random = Random();
+    final audioIndex = random.nextInt(_correctFeedbackAudios.length);
+    try {
+      await _audioPlayer.play(AssetSource(_correctFeedbackAudios[audioIndex]));
+    } catch (e) {
+      print('Erro ao reproduzir áudio de acerto: $e');
+    }
+  }
+
+  /// Toca áudio de feedback para resposta errada
+  Future<void> playErrorFeedback() async {
+    final random = Random();
+    final audioIndex = random.nextInt(_errorFeedbackAudios.length);
+    try {
+      await _audioPlayer.play(AssetSource(_errorFeedbackAudios[audioIndex]));
+    } catch (e) {
+      print('Erro ao reproduzir áudio de erro: $e');
+    }
   }
 
   /// Limpa a questão atual e marca game.isQuestionActive = false

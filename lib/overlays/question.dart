@@ -48,7 +48,7 @@ class _QuestionOverlayState extends State<QuestionOverlay>
     super.dispose();
   }
 
-  void _onOptionPressed(String option) {
+  Future<void> _onOptionPressed(String option) async {
     // Verifica se está correta
     final correct = widget.game.questionsManager.checkAnswer(option);
 
@@ -61,26 +61,33 @@ class _QuestionOverlayState extends State<QuestionOverlay>
     // Aplica o efeito no jogo (pontuação/vida)
     widget.game.applyAnswerResult(option, correct);
 
-    // Para o áudio
+    // Para o áudio da pergunta
     widget.game.questionsManager.stopAudio();
 
+    // Toca o áudio de feedback apropriado
+    if (correct) {
+      await widget.game.questionsManager.playCorrectFeedback();
+    } else {
+      await widget.game.questionsManager.playErrorFeedback();
+    }
+
     // Espera 2 segundos para mostrar o feedback visual
-    Future.delayed(const Duration(seconds: 2), () {
-      // Limpa a questão e fecha a overlay
-      widget.game.questionsManager.clearCurrentQuestion();
-      widget.game.overlays.remove('QuestionOverlay');
+    await Future.delayed(const Duration(seconds: 2));
 
-      // Retoma o jogo
-      widget.game.resumeEngine();
+    // Limpa a questão e fecha a overlay
+    widget.game.questionsManager.clearCurrentQuestion();
+    widget.game.overlays.remove('QuestionOverlay');
 
-      // Reset do estado interno da overlay
-      if (mounted) {
-        setState(() {
-          selectedOption = null;
-          isCorrect = null;
-        });
-      }
-    });
+    // Retoma o jogo
+    widget.game.resumeEngine();
+
+    // Reset do estado interno da overlay
+    if (mounted) {
+      setState(() {
+        selectedOption = null;
+        isCorrect = null;
+      });
+    }
   }
 
   @override
@@ -265,9 +272,13 @@ class _QuestionOverlayState extends State<QuestionOverlay>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Text(
-                      isCorrect == true ? "🎉" : "😢",
-                      style: const TextStyle(
-                        fontSize: 32,
+                      isCorrect == true
+                          ? "🎉 Parabéns!"
+                          : "😢 Tente novamente!",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: isCorrect == true ? Colors.green : Colors.red,
                       ),
                     ),
                   ),

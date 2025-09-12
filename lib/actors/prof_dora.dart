@@ -1,6 +1,8 @@
 import 'package:EscreveAI/actors/ember.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'dart:math';
 
 import '../ember_quest.dart';
 
@@ -20,6 +22,15 @@ class TeacherDora extends SpriteComponent
   // Variáveis para controlar o delay do diálogo
   bool canShowDialog = true;
   DateTime? lastDialogTime;
+
+  // Lista de áudios de apresentação
+  final List<String> presentationAudios = [
+    'dora_voices/presentations/dora_apresentacao_1.mp3',
+    'dora_voices/presentations/dora_apresentacao_2.mp3',
+    'dora_voices/presentations/dora_apresentacao_3.mp3',
+    'dora_voices/presentations/dora_apresentacao_4.mp3',
+    'dora_voices/presentations/dora_apresentacao_5.mp3',
+  ];
 
   TeacherDora({
     required this.gridPosition,
@@ -61,6 +72,9 @@ class TeacherDora extends SpriteComponent
 
     // Verificar se colidiu com o jogador e se pode mostrar o diálogo
     if (other is EmberPlayer && canShowDialog) {
+      // Tocar áudio de apresentação aleatório
+      _playRandomPresentationAudio();
+
       // Mostrar o overlay da Dora
       game.overlays.add('doraDialog');
       game.pauseEngine();
@@ -87,6 +101,13 @@ class TeacherDora extends SpriteComponent
         }
       });
     }
+  }
+
+  // Método para tocar um áudio de apresentação aleatório
+  void _playRandomPresentationAudio() {
+    final random = Random();
+    int randomIndex = random.nextInt(presentationAudios.length);
+    FlameAudio.play(presentationAudios[randomIndex]);
   }
 
   @override

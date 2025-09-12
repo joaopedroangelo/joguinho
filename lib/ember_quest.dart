@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import 'actors/ember.dart';
@@ -55,6 +56,14 @@ class EmberQuestGame extends FlameGame
       'water_enemy.png',
       'prof.png',
       'background05.png'
+    ]);
+
+    await FlameAudio.audioCache.loadAll([
+      'dora_voices/presentations/dora_apresentacao_1.mp3',
+      'dora_voices/presentations/dora_apresentacao_2.mp3',
+      'dora_voices/presentations/dora_apresentacao_3.mp3',
+      'dora_voices/presentations/dora_apresentacao_4.mp3',
+      'dora_voices/presentations/dora_apresentacao_5.mp3',
     ]);
     camera.viewfinder.anchor = Anchor.topLeft;
     // 🔹 Adiciona Parallax de fundo

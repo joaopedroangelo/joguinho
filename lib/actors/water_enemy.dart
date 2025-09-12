@@ -27,7 +27,7 @@ class WaterEnemy extends SpriteComponent with HasGameReference<EmberQuestGame> {
       MoveEffect.by(
         Vector2(-2 * size.x, 0),
         EffectController(
-          duration: 3,
+          duration: 2,
           alternate: true,
           infinite: true,
         ),

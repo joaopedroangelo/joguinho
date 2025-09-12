@@ -21,160 +21,159 @@ final segments = [
   segment2,
   segment3,
   segment4,
-  segment5, // Novo segmento adicional
+  segment5,
 ];
 
 final segment0 = [
+  // Introdução + primeiro "vale" (buraco). Buraco: X=6..7 (sem GroundBlock).
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(2, 0), GroundBlock),
   Block(Vector2(3, 0), GroundBlock),
   Block(Vector2(4, 0), GroundBlock),
   Block(Vector2(5, 0), GroundBlock),
-  Block(Vector2(5, 1), TeacherDora),
-  Block(Vector2(5, 3), PlatformBlock),
-  Block(Vector2(5, 4), Star), // ⭐ Nova estrela
-  Block(Vector2(8, 4), WaterEnemy), // ⭐ Nova estrela
-  Block(Vector2(6, 0), GroundBlock),
-  Block(Vector2(6, 3), PlatformBlock),
-  Block(Vector2(7, 0), GroundBlock),
-  Block(Vector2(7, 3), PlatformBlock),
+  // <-- buraco: não há GroundBlock em 6 e 7 (se o personagem cair aqui, perde)
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 3), PlatformBlock),
-  Block(Vector2(8, 4), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 2), Star), // ⭐ Nova estrela
+
+  // NPC professor (perto do início)
+  Block(Vector2(3, 2), TeacherDora),
+
+  // Montanha pequena (degraus fáceis para crianças)
+  Block(Vector2(3, 1), PlatformBlock),
+  Block(Vector2(4, 2), PlatformBlock),
+  Block(Vector2(4, 3), PlatformBlock),
+  Block(Vector2(4, 4), PlatformBlock),
+
+  // Estrelas poucas e espaçadas
+  Block(Vector2(4, 1), Star),
+  Block(Vector2(4, 9), Star),
+
+  // Água no fundo do buraco (alerta visual + perigo)
 ];
 
 final segment1 = [
+  // Montanha mais longa em "rampa" suave (degrau por degrau, com plataformas)
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
-  Block(Vector2(1, 1), PlatformBlock),
-  Block(Vector2(1, 2), PlatformBlock),
-  Block(Vector2(1, 3), PlatformBlock),
-  Block(Vector2(1, 4), Star), // ⭐ Nova estrela
-  Block(Vector2(2, 6), PlatformBlock),
-  Block(Vector2(2, 7), Star), // ⭐ Nova estrela
-  Block(Vector2(3, 6), PlatformBlock),
-  Block(Vector2(3, 7), Star), // ⭐ Nova estrela
-  Block(Vector2(6, 5), PlatformBlock),
-  Block(Vector2(6, 6), Star), // ⭐ Nova estrela
-  Block(Vector2(7, 5), PlatformBlock),
-  Block(Vector2(7, 7), Star),
+  Block(Vector2(2, 0), GroundBlock),
+  Block(Vector2(3, 0), GroundBlock),
+  Block(Vector2(4, 0), GroundBlock),
+  Block(Vector2(5, 0), GroundBlock),
+  Block(Vector2(6, 0), GroundBlock),
+  Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 1), PlatformBlock),
-  Block(Vector2(8, 2), Star), // ⭐ Nova estrela
-  Block(Vector2(8, 5), PlatformBlock),
-  Block(Vector2(8, 6), WaterEnemy),
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 3), Star), // ⭐ Nova estrela
+
+  // Rampa (subida fácil): plataformas em Y crescente
+  Block(Vector2(2, 1), PlatformBlock),
+  Block(Vector2(3, 2), PlatformBlock),
+  Block(Vector2(4, 3), PlatformBlock),
+  Block(Vector2(5, 4), PlatformBlock), // topo da montanha
+
+  // Estrelas espaçadas ao longo da subida (não adjacentes)
+  Block(Vector2(2, 2), Star),
+  Block(Vector2(4, 4), Star),
+
+  // Inimigo discreto no final
+  Block(Vector2(9, 1), WaterEnemy),
 ];
 
 final segment2 = [
+  // Plano com um pequeno "vale" no centro (buraco estreito)
   Block(Vector2(0, 0), GroundBlock),
-  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
-  Block(Vector2(1, 2), Star), // ⭐ Nova estrela
   Block(Vector2(2, 0), GroundBlock),
-  Block(Vector2(2, 2), Star), // ⭐ Nova estrela
   Block(Vector2(3, 0), GroundBlock),
-  Block(Vector2(3, 3), PlatformBlock),
-  Block(Vector2(3, 4), Star), // ⭐ Nova estrela
-  Block(Vector2(4, 0), GroundBlock),
-  Block(Vector2(4, 3), PlatformBlock),
-  Block(Vector2(4, 4), Star), // ⭐ Nova estrela
+  // Buraco em X=4 (sem GroundBlock) — cuidado!
   Block(Vector2(5, 0), GroundBlock),
-  Block(Vector2(5, 3), PlatformBlock),
-  Block(Vector2(5, 4), WaterEnemy),
   Block(Vector2(6, 0), GroundBlock),
-  Block(Vector2(6, 3), PlatformBlock),
-  Block(Vector2(6, 4), PlatformBlock),
-  Block(Vector2(6, 5), PlatformBlock),
-  Block(Vector2(6, 7), Star),
   Block(Vector2(7, 0), GroundBlock),
-  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 2), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 2), Star), // ⭐ Nova estrela
+
+  // Plataforma / pequeno pico ao lado do buraco (para saltar)
+  Block(Vector2(3, 1), PlatformBlock),
+  Block(Vector2(5, 1), PlatformBlock),
+
+  // Estrelas reduzidas e espaçadas
+  Block(Vector2(1, 1), Star),
+  Block(Vector2(7, 2), Star),
+
+  // Água no fundo do vale (sinal de perigo)
 ];
 
 final segment3 = [
+  // Grande montanha / coroa: subida e descida em degraus largos
   Block(Vector2(0, 0), GroundBlock),
-  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
-  Block(Vector2(1, 1), WaterEnemy),
   Block(Vector2(2, 0), GroundBlock),
-  Block(Vector2(2, 1), PlatformBlock),
-  Block(Vector2(2, 2), PlatformBlock),
-  Block(Vector2(2, 3), Star), // ⭐ Nova estrela
-  Block(Vector2(4, 4), PlatformBlock),
-  Block(Vector2(5, 5), Star), // ⭐ Nova estrela
-  Block(Vector2(6, 6), PlatformBlock),
-  Block(Vector2(6, 7), Star), // ⭐ Nova estrela
+  Block(Vector2(3, 0), GroundBlock),
+  Block(Vector2(4, 0), GroundBlock),
+  Block(Vector2(5, 0), GroundBlock),
+  Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(7, 0), GroundBlock),
-  Block(Vector2(7, 1), PlatformBlock),
-  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 8), Star),
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 3), Star), // ⭐ Nova estrela
+
+  // Montanha em degraus — fácil de subir (espaços largos)
+  Block(Vector2(3, 1), PlatformBlock),
+  Block(Vector2(4, 2), PlatformBlock),
+  Block(Vector2(5, 3), PlatformBlock), // pico
+  Block(Vector2(6, 2), PlatformBlock),
+  Block(Vector2(7, 1), PlatformBlock),
+
+  // Estrela de recompensa no pico (mais alta)
+  Block(Vector2(5, 4), Star),
+
+  // Um inimigo no final do segmento (mantido)
+  Block(Vector2(9, 1), WaterEnemy),
 ];
 
 final segment4 = [
+  // Zona de descanso — sem buracos, plataformas para brincar
   Block(Vector2(0, 0), GroundBlock),
-  Block(Vector2(0, 2), Star), // ⭐ Nova estrela
   Block(Vector2(1, 0), GroundBlock),
-  Block(Vector2(1, 2), Star), // ⭐ Nova estrela
   Block(Vector2(2, 0), GroundBlock),
-  Block(Vector2(2, 3), PlatformBlock),
-  Block(Vector2(2, 4), Star), // ⭐ Nova estrela
   Block(Vector2(3, 0), GroundBlock),
-  Block(Vector2(3, 1), WaterEnemy),
-  Block(Vector2(3, 3), PlatformBlock),
-  Block(Vector2(3, 4), Star), // ⭐ Nova estrela
   Block(Vector2(4, 0), GroundBlock),
-  Block(Vector2(4, 2), Star), // ⭐ Nova estrela
   Block(Vector2(5, 0), GroundBlock),
-  Block(Vector2(5, 5), PlatformBlock),
-  Block(Vector2(5, 6), Star), // ⭐ Nova estrela
   Block(Vector2(6, 0), GroundBlock),
-  Block(Vector2(6, 5), PlatformBlock),
-  Block(Vector2(6, 7), Star),
   Block(Vector2(7, 0), GroundBlock),
-  Block(Vector2(7, 2), Star), // ⭐ Nova estrela
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 3), PlatformBlock),
-  Block(Vector2(8, 4), Star), // ⭐ Nova estrela
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 1), WaterEnemy),
-  Block(Vector2(9, 3), PlatformBlock),
-  Block(Vector2(9, 5), Star), // ⭐ Nova estrela
+
+  // Plataformas seguras e estrelas espaciais
+  Block(Vector2(2, 2), PlatformBlock),
+  Block(Vector2(5, 2), PlatformBlock),
+  Block(Vector2(8, 2), PlatformBlock),
+
+  Block(Vector2(1, 1), Star),
+  Block(Vector2(6, 1), Star),
 ];
 
-// Novo segmento com foco em estrelas
 final segment5 = [
+  // Final com corredor, um pequeno buraco à esquerda e montanha à direita
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
-  Block(Vector2(1, 2), Star), // ⭐
-  Block(Vector2(2, 0), GroundBlock),
-  Block(Vector2(2, 3), Star), // ⭐
+  // Buraco em X=2 (sem GroundBlock) — armadilha simples antes do corredor
   Block(Vector2(3, 0), GroundBlock),
-  Block(Vector2(3, 2), PlatformBlock),
-  Block(Vector2(3, 4), Star), // ⭐
   Block(Vector2(4, 0), GroundBlock),
-  Block(Vector2(4, 3), PlatformBlock),
-  Block(Vector2(4, 5), Star), // ⭐
   Block(Vector2(5, 0), GroundBlock),
-  Block(Vector2(5, 2), PlatformBlock),
-  Block(Vector2(5, 4), PlatformBlock),
-  Block(Vector2(5, 6), Star), // ⭐
   Block(Vector2(6, 0), GroundBlock),
-  Block(Vector2(6, 3), Star), // ⭐
   Block(Vector2(7, 0), GroundBlock),
-  Block(Vector2(7, 2), Star), // ⭐
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 4), Star), // ⭐
   Block(Vector2(9, 0), GroundBlock),
-  Block(Vector2(9, 3), Star), // ⭐
+
+  // Pequena montanha final (degrau)
+  Block(Vector2(6, 1), PlatformBlock),
+  Block(Vector2(7, 2), PlatformBlock),
+
+  // Estrelas espaçadas como recompensa
+  Block(Vector2(1, 1), Star),
+  Block(Vector2(4, 2), Star),
+  Block(Vector2(9, 4), Star),
+
+  // Inimigo no fundo do buraco inicial e um inimigo extra no corredor
+  Block(Vector2(9, 1), WaterEnemy),
 ];

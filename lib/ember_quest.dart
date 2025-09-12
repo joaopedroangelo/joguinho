@@ -5,6 +5,7 @@ import 'package:EscreveAI/overlays/dora_overlay.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 
 import 'actors/ember.dart';
@@ -52,9 +53,19 @@ class EmberQuestGame extends FlameGame
       'heart.png',
       'star.png',
       'water_enemy.png',
-      'prof.png'
+      'prof.png',
+      'background05.png'
     ]);
     camera.viewfinder.anchor = Anchor.topLeft;
+    // 🔹 Adiciona Parallax de fundo
+    final parallax = await loadParallaxComponent(
+      [
+        ParallaxImageData('background05.png'),
+      ],
+      baseVelocity: Vector2(10, 0), // velocidade horizontal
+      velocityMultiplierDelta: Vector2(1.8, 1.0),
+    );
+    add(parallax);
 
     // Inicializa QuestionsManager (passando referência do game)
     questionsManager = QuestionsManager(this);
